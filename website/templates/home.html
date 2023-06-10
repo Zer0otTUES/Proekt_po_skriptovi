@@ -13,12 +13,20 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet " href ="{{ url_for('static', filename='home.css')}}">
+    
         <title>Home</title>
-        <link rel="stylesheet " href ="{{ url_for('static', filename='home.css')}}">
+        
+        
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:ital,wght@0,300;0,400;1,400&family=Ubuntu:ital,wght@1,300&display=swap" rel="stylesheet">
     <body>
+      <div class="image"></div>
+
+        
+     
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
             messages %} {% for category, message in messages %} {% if category ==
             'error' %}

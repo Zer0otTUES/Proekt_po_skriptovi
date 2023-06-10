@@ -3,19 +3,18 @@
     margin: 0;
     padding: 0;
 }
-body{
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.5)50%,rgba(0,0,0,0.5)50%), url("{{ url_for('static', filename='images/pexels-emre-can-acer-2079451.jpg') }}");
-    background-position: center;
-    background-size: cover;
-    position: relative;
-}
+
 h1{
     text-align: center;
     margin-bottom: 45px;
     color: whitesmoke;
     font-size: 40px;
     transform: translate(-0%,-0%)
+}
+body{
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(images/home.jpg);
+    background-position: center ;
 }
 .header{
     min-height: 100vh;

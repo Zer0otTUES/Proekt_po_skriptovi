@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predict</title>
+</head>
+<body>
+    <h1>Stock Price Prediction</h1>
+    <form method="POST" action="/predict">
+        <label for="company">Choose a company:</label>
+        <select name="company" id="company">
+            <option value="META">META</option>
+            <option value="AAPL">AAPL</option>
+            <!-- Add more options for other companies if needed -->
+        </select>
+        <br>
+        <input type="submit" value="Predict">
+    </form>
+    
+    {% if prediction %}
+        <h2>Prediction: {{ prediction }}</h2>
+        <p>Elapsed Time: {{ elapsed_time }} seconds</p>
+        
+        {% if plot_url %}
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Stock Price Plot">
+        {% endif %}
+    {% endif %}
+</body>
+</html>
