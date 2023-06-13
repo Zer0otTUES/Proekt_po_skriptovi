@@ -28,15 +28,23 @@
         <input type="date" id="test_end" name="test_end" required>
         <br>
 
+        <label for="future_days">Future Days to Predict:</label>
+        <input type="number" id="future_days" name="future_days" min="1" value="1" required>
+        <br>
+
         <input type="submit" value="Predict">
     </form>
 
     {% if show_results %}
         <h2>Stock Price Prediction Results</h2>
         <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
-        <h2>Predicted Prices</h2>
-        <p>Predicted price: {{ prediction }}</p>
+        <h2>Future Predicted Prices</h2>
+        <ul>
+        {% for price in predictions %}
+            <li>{{ price }}</li>
+        {% endfor %}
         </ul>
     {% endif %}
+        
 </body>
 </html>

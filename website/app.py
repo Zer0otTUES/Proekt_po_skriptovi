@@ -21,21 +21,22 @@ app = Blueprint('app', __name__)
 def predict():
     show_results = False
     plot_url = None
-    prediction = None
+    predictions = []
 
     if request.method == 'POST':
-        show_results = True
         company = request.form['company']
         start = request.form['start']
         end = request.form['end']
         test_start = request.form['test_start']
         test_end = request.form['test_end']
+        future_days = int(request.form['future_days'])
 
-        plot_url, prediction = predict_stock_price(company, start, end, test_start, test_end)
+        plot_url, predictions = predict_stock_price(company, start, end, test_start, test_end, future_days=future_days)
+        show_results = True
 
-    return render_template('predict.html', show_results=show_results, plot_url=plot_url, prediction=prediction)
+    return render_template('predict.html', show_results=show_results, plot_url=plot_url, predictions=predictions)
 
-def predict_stock_price(company, start, end, test_start, test_end, prediction_days=60):
+def predict_stock_price(company, start, end, test_start, test_end, prediction_days=60, future_days=1):
     # Load data
     data = yf.download(company, start=start, end=end)
 
@@ -58,10 +59,9 @@ def predict_stock_price(company, start, end, test_start, test_end, prediction_da
     plot_url, predicted_prices = plot_test_predictions(model, scaler, company, data, test_data, prediction_days)
 
     # Predict next day
-    prediction = predict_next_day(model, scaler, data, test_data, prediction_days)
+    predictions = predict_future_days(model, scaler, data, test_data, prediction_days, future_days)
 
-    return plot_url, prediction
-
+    return plot_url, predictions
 def prepare_training_data(scaled_data, prediction_days):
     train_features = []
     train_targets = []
@@ -120,17 +120,24 @@ def plot_test_predictions(model, scaler, company, data, test_data, prediction_da
 
     return plot_url, predicted_prices
 
-def predict_next_day(model, scaler, data, test_data, prediction_days):
+def predict_future_days(model, scaler, data, test_data, prediction_days, future_days):
     total_dataset = pd.concat((data['Close'], test_data['Close']), axis=0)
 
-    model_inputs = total_dataset[len(total_dataset) - prediction_days:].values
-    model_inputs = model_inputs.reshape(-1, 1)
-    model_inputs = scaler.transform(model_inputs)
+    future_predictions = []
 
-    x_test = model_inputs[-prediction_days:].reshape(1, -1, 1)
+    for i in range(future_days):
+        model_inputs = total_dataset[len(total_dataset) - prediction_days:].values
+        model_inputs = model_inputs.reshape(-1, 1)
+        model_inputs = scaler.transform(model_inputs)
 
-    predicted_price = model.predict(x_test)
-    predicted_price = scaler.inverse_transform(predicted_price)
-    next_day_prediction = predicted_price[0][0]
+        x_test = model_inputs[-prediction_days:].reshape(1, -1, 1)
 
-    return next_day_prediction
+        predicted_price = model.predict(x_test)
+        predicted_price = scaler.inverse_transform(predicted_price)
+        next_day_prediction = predicted_price[0][0]
+
+        future_predictions.append(next_day_prediction)
+
+        total_dataset = total_dataset.append(pd.Series([next_day_prediction]), ignore_index=True)
+
+    return future_predictions
