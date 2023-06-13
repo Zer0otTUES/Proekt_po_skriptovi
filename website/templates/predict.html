@@ -1,28 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Predict</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Prediction</title>
 </head>
 <body>
     <h1>Stock Price Prediction</h1>
-    <form method="POST" action="/predict">
-        <label for="company">Choose a company:</label>
-        <select name="company" id="company">
-            <option value="META">META</option>
-            <option value="AAPL">AAPL</option>
-            <!-- Add more options for other companies if needed -->
-        </select>
+    <form action="/predict" method="post">
+        <label for="company">Company Symbol:</label>
+        <input type="text" id="company" name="company" required>
         <br>
+
+        <label for="start">Start Date :</label>
+        <input type="date" id="start" name="start" required>
+        <br>
+
+        <label for="end">End Date :</label>
+        <input type="date" id="end" name="end" required>
+        <br>
+
+        <label for="test_start">Test Start Date :</label>
+        <input type="date" id="test_start" name="test_start" required>
+        <br>
+
+        <label for="test_end">Test End Date :</label>
+        <input type="date" id="test_end" name="test_end" required>
+        <br>
+
         <input type="submit" value="Predict">
     </form>
-    
-    {% if prediction %}
-        <h2>Prediction: {{ prediction }}</h2>
-        <p>Elapsed Time: {{ elapsed_time }} seconds</p>
-        
-        {% if plot_url %}
-            <img src="data:image/png;base64,{{ plot_url }}" alt="Stock Price Plot">
-        {% endif %}
+
+    {% if show_results %}
+        <h2>Stock Price Prediction Results</h2>
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
+        <h2>Predicted Prices</h2>
+        <p>Predicted price: {{ prediction }}</p>
+        </ul>
     {% endif %}
 </body>
 </html>
