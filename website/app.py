@@ -22,6 +22,7 @@ def predict():
     show_results = False
     plot_url = None
     predictions = []
+    latest_price = None
 
     if request.method == 'POST':
         company = request.form['company']
@@ -32,9 +33,10 @@ def predict():
         future_days = int(request.form['future_days'])
 
         plot_url, predictions = predict_stock_price(company, start, end, test_start, test_end, future_days=future_days)
+        latest_price = get_latest_stock_price(company)
         show_results = True
 
-    return render_template('predict.html', show_results=show_results, plot_url=plot_url, predictions=predictions)
+    return render_template('predict.html', show_results=show_results, plot_url=plot_url, predictions=predictions, latest_price=latest_price)
 
 def predict_stock_price(company, start, end, test_start, test_end, prediction_days=60, future_days=1):
     # Load data
@@ -141,3 +143,8 @@ def predict_future_days(model, scaler, data, test_data, prediction_days, future_
         total_dataset = total_dataset.append(pd.Series([next_day_prediction]), ignore_index=True)
 
     return future_predictions
+
+def get_latest_stock_price(company):
+    latest_data = yf.download(company, period='1d')
+    latest_price = latest_data['Close'].iloc[-1]
+    return latest_price

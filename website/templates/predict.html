@@ -36,15 +36,21 @@
     </form>
 
     {% if show_results %}
-        <h2>Stock Price Prediction Results</h2>
-        <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
-        <h2>Future Predicted Prices</h2>
-        <ul>
-        {% for price in predictions %}
-            <li>{{ price }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-        
+    <h2>Stock Price Prediction Results</h2>
+    <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
+    <h2>Future Predicted Prices</h2>
+    <ul>
+    {% for price in predictions %}
+        <li>
+          {% if loop.first %}
+            {{ price }} (Latest price: {{ latest_price }})
+          {% else %}
+            {{ price }}
+          {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
 </body>
 </html>
