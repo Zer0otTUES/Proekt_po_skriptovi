@@ -49,25 +49,23 @@
                 <div class="nav-links">
                     <ul>
                         {% if user.is_authenticated %}
-                        <li><a href="">MY PROFILE</a></li>
-                        <li><a href="">TRENDING</a></li>
-                        <li><a href="">ABOUT US</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                        <li><a href="/predict">Predictor</a></li>
                         {% else %}
-                        <li><a href="login">LOGIN</a></li>
-                        <li><a href="">TRENDING</a></li>
-                        <li><a href="">ABOUT US</a></li>
+                        <li><a href="login">Login</a></li>
                         {% endif %}
                     </ul>
                 </div>
             </nav>
           <div class="text-box">  
                 {% if user.is_authenticated %}
-                <h1>NAME</h1>
+                <h1>Stock Predictor</h1>
                 <p>You can have your stock purcheses or sels before making them!</p>
+                <a href="/predict" class="hero-btn">Try for yourself </a>
                 {% else %}
-                <h1>NAME</h1>
+                <h1>Stock Predictor</h1>
                 <p>You can have your stock purcheses or sels before making them!</p>
-                <a href="login" class="hero-btn">Login and learn more </a>
+                <a href="/login" class="hero-btn">Login and learn more </a>
                 {% endif %}
           </div>
         </section>

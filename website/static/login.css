@@ -7,7 +7,7 @@
 }
 body{
     min-height: 100vh;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(photos/pexels-olena-bohovyk-3646172.jpg);
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(images/login.jpg);
     background-position: center;
     background-size: cover;
 }
