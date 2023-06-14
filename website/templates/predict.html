@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Price Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<link rel="stylesheet " href ="{{ url_for('static', filename='predict.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='predict.css')}}">
 <body>
     <h1>Stock Price Prediction</h1>
-    <form action="/predict" method="post">
+    <form id="prediction-form" action="#" method="post">
         <label for="company">Company Symbol:</label>
         <input type="text" id="company" name="company" required>
         <br>
-
+        <div class="loading-container" id="loading-container" style="display: none;">
+    <div class="loading-text">Loading...</div>
+    <div class="loading-bar"></div>
+</div>
+        </div>
         <label for="start">Start Date :</label>
         <input type="date" id="start" name="start" required>
         <br>
@@ -33,25 +38,34 @@
         <input type="number" id="future_days" name="future_days" min="1" value="1" required>
         <br>
 
-        <input type="submit" value="Predict">
+        <input type="submit" value="Predict" onclick="submitForm()">
     </form>
+    <script>
+        function submitForm() {
+            showLoadingBar();
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: $('#prediction-form').serialize(),
+                success: function(response) {
+                    $('#results').html(response);
+                    hideLoadingBar();
+                },
+                error: function() {
+                    alert('An error occurred. Please try again later.');
+                    hideLoadingBar();
+                }
+            });
+            return false;
+        }
 
-    {% if show_results %}
-    <h2>Stock Price Prediction Results</h2>
-    <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
-    <h2>Future Predicted Prices</h2>
-    <ul>
-    {% for price in predictions %}
-        <li>
-          {% if loop.first %}
-            {{ price }} (Latest price: {{ latest_price }})
-          {% else %}
-            {{ price }}
-          {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
-{% endif %}
+        function showLoadingBar() {
+            $('#loading-container').show();
+        }
 
+        function hideLoadingBar() {
+            $('#loading-container').hide();
+        }
+    </script>
 </body>
 </html>

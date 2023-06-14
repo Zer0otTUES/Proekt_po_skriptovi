@@ -19,11 +19,6 @@ app = Blueprint('app', __name__)
 @app.route('/predict', methods=['GET', 'POST'])
 @login_required
 def predict():
-    show_results = False
-    plot_url = None
-    predictions = []
-    latest_price = None
-
     if request.method == 'POST':
         company = request.form['company']
         start = request.form['start']
@@ -36,7 +31,9 @@ def predict():
         latest_price = get_latest_stock_price(company)
         show_results = True
 
-    return render_template('predict.html', show_results=show_results, plot_url=plot_url, predictions=predictions, latest_price=latest_price)
+        return render_template('results.html', show_results=show_results, plot_url=plot_url, predictions=predictions, latest_price=latest_price)
+    else:
+        return render_template('predict.html')
 
 def predict_stock_price(company, start, end, test_start, test_end, prediction_days=60, future_days=1):
     # Load data

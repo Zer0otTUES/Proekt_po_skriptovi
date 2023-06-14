@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Prediction Results</title>
+</head>
+<body>
+    {% if show_results %}
+    <h2>Stock Price Prediction Results</h2>
+    <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
+    <h2>Future Predicted Prices</h2>
+    <ul>
+    {% for price in predictions %}
+        <li>
+            {% if loop.first %}
+                {{ price }} (Latest price: {{ latest_price }})
+            {% else %}
+                {{ price }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>
