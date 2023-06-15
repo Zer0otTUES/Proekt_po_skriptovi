@@ -10,16 +10,15 @@
 </head>
 <link rel="stylesheet" href="{{ url_for('static', filename='predict.css')}}">
 <body>
-    <h1>Stock Price Prediction</h1>
+    <div class="header">
+        <h1>Stock Predictor</h1>
+        <a href="/" class="home-button">Home</a>
+    </div>
     <form id="prediction-form" action="#" method="post">
         <label for="company">Company Symbol:</label>
         <input type="text" id="company" name="company" required>
         <br>
-        <div class="loading-container" id="loading-container" style="display: none;">
-    <div class="loading-text">Loading...</div>
-    <div class="loading-bar"></div>
-</div>
-        </div>
+
         <label for="start">Start Date :</label>
         <input type="date" id="start" name="start" required>
         <br>
@@ -42,124 +41,122 @@
 
         <input type="submit" value="Predict" onclick="submitForm()">
     </form>
-
-    <script>
-        const companies = [
-        {"symbol": "AAPL", "name": "Apple Inc."},
-        {"symbol": "MSFT", "name": "Microsoft Corporation"},
-        {"symbol": "AMZN", "name": "Amazon.com Inc."},
-        {"symbol": "GOOGL", "name": "Alphabet Inc. Class A"},
-        {"symbol": "GOOG", "name": "Alphabet Inc. Class C"},
-        {"symbol": "META", "name": "Meta Platforms, Inc."},
-        {"symbol": "BRK.B", "name": "Berkshire Hathaway Inc. Class B"},
-        {"symbol": "V", "name": "Visa Inc."},
-        {"symbol": "JPM", "name": "JPMorgan Chase & Co."},
-        {"symbol": "JNJ", "name": "Johnson & Johnson"},
-        {"symbol": "WMT", "name": "Walmart Inc."},
-        {"symbol": "MA", "name": "Mastercard Incorporated"},
-        {"symbol": "PG", "name": "Procter & Gamble Co."},
-        {"symbol": "NVDA", "name": "NVIDIA Corporation"},
-        {"symbol": "HD", "name": "The Home Depot Inc."},
-        {"symbol": "PYPL", "name": "PayPal Holdings Inc."},
-        {"symbol": "BAC", "name": "Bank of America Corp."},
-        {"symbol": "ADBE", "name": "Adobe Inc."},
-        {"symbol": "CMCSA", "name": "Comcast Corporation"},
-        {"symbol": "PFE", "name": "Pfizer Inc."},
-        {"symbol": "CSCO", "name": "Cisco Systems Inc."},
-        {"symbol": "PEP", "name": "PepsiCo Inc."},
-        {"symbol": "INTC", "name": "Intel Corporation"},
-        {"symbol": "NFLX", "name": "Netflix Inc."},
-        {"symbol": "KO", "name": "The Coca-Cola Co."},
-        {"symbol": "T", "name": "AT&T Inc."},
-        {"symbol": "MRK", "name": "Merck & Co., Inc."},
-        {"symbol": "XOM", "name": "Exxon Mobil Corporation"},
-        {"symbol": "VZ", "name": "Verizon Communications Inc."},
-        {"symbol": "ABBV", "name": "AbbVie Inc."},
-        {"symbol": "ORCL", "name": "Oracle Corporation"},
-        {"symbol": "CRM", "name": "salesforce.com, inc."},
-        {"symbol": "TMO", "name": "Thermo Fisher Scientific Inc."},
-        {"symbol": "UNH", "name": "UnitedHealth Group Incorporated"},
-        {"symbol": "ABT", "name": "Abbott Laboratories"},
-        {"symbol": "MDT", "name": "Medtronic plc"},
-        {"symbol": "LLY", "name": "Eli Lilly and Company"},
-        {"symbol": "PM", "name": "Philip Morris International Inc."},
-        {"symbol": "ACN", "name": "Accenture plc"},
-        {"symbol": "LIN", "name": "Linde plc"},
-        {"symbol": "DIS", "name": "The Walt Disney Company"},
-        {"symbol": "MMM", "name": "3M Company"},
-        {"symbol": "NKE", "name": "NIKE, Inc."},
-        {"symbol": "TXN", "name": "Texas Instruments Incorporated"},
-        {"symbol": "HON", "name": "Honeywell International Inc."},
-        {"symbol": "AMGN", "name": "Amgen Inc."},
-        {"symbol": "IBM", "name": "International Business Machines Corporation"},
-        {"symbol": "GILD", "name": "Gilead Sciences, Inc."},
-        {"symbol": "AVGO", "name": "Broadcom Inc."},
-        {"symbol": "BA", "name": "The Boeing Company"},
-        {"symbol": "CAT", "name": "Caterpillar Inc."},
-        {"symbol": "AXP", "name": "American Express Company"},
-        {"symbol": "CVX", "name": "Chevron Corporation"},
-        {"symbol": "DHR", "name": "Danaher Corporation"},
-        {"symbol": "UTX", "name": "United Technologies Corporation"},
-        {"symbol": "GS", "name": "TheGoldman Sachs Group, Inc."},
-        {"symbol": "MMM", "name": "3M Company"},
-        {"symbol": "NKE", "name": "NIKE, Inc."},
-        {"symbol": "TXN", "name": "Texas Instruments Incorporated"},
-        {"symbol": "HON", "name": "Honeywell International Inc."},
-        {"symbol": "AMGN", "name": "Amgen Inc."},
-        {"symbol": "IBM", "name": "International Business Machines Corporation"},
-        {"symbol": "GILD", "name": "Gilead Sciences, Inc."},
-        {"symbol": "AVGO", "name": "Broadcom Inc."},
-        {"symbol": "BA", "name": "The Boeing Company"},
-        {"symbol": "CAT", "name": "Caterpillar Inc."},
-        {"symbol": "AXP", "name": "American Express Company"},
-        {"symbol": "CVX", "name": "Chevron Corporation"},
-        {"symbol": "DHR", "name": "Danaher Corporation"},
-        {"symbol": "UTX", "name": "United Technologies Corporation"},
-        {"symbol": "GS", "name": "The Goldman Sachs Group, Inc."},
-        {"symbol": "QCOM", "name": "QUALCOMM Incorporated"},
-        {"symbol": "MO", "name": "Altria Group, Inc."},
-        {"symbol": "C", "name": "Citigroup Inc."},
-        {"symbol": "COP", "name": "ConocoPhillips"},
-        {"symbol": "VRTX", "name": "Vertex Pharmaceuticals Incorporated"},
-        {"symbol": "NEE", "name": "NextEra Energy, Inc."},
-        {"symbol": "AMT", "name": "American Tower Corporation"},
-        {"symbol": "LMT", "name": "Lockheed Martin Corporation"}
-    ];
-
-        const companyNamesAndSymbols = companies.map(company => {
-            return { label: `${company.name} (${company.symbol})`, value: company.symbol };
-        });
-
-        $("#company").autocomplete({
-            source: companyNamesAndSymbols,
-            minLength: 2
-        });
-
-        function submitForm() {
-            showLoadingBar();
-            $.ajax({
-                type: 'POST',
-                url: '/predict',
-                data: $('#prediction-form').serialize(),
-                success: function(response) {
-                    $('#results').html(response);
-                    hideLoadingBar();
-                },
-                error: function() {
-                    alert('An error occurred. Please try again later.');
-                    hideLoadingBar();
-                }
+    
+        <script>
+            const companies = [
+            {"symbol": "AAPL", "name": "Apple Inc."},
+            {"symbol": "MSFT", "name": "Microsoft Corporation"},
+            {"symbol": "AMZN", "name": "Amazon.com Inc."},
+            {"symbol": "GOOGL", "name": "Alphabet Inc. Class A"},
+            {"symbol": "GOOG", "name": "Alphabet Inc. Class C"},
+            {"symbol": "META", "name": "Meta Platforms, Inc."},
+            {"symbol": "BRK.B", "name": "Berkshire Hathaway Inc. Class B"},
+            {"symbol": "V", "name": "Visa Inc."},
+            {"symbol": "JPM", "name": "JPMorgan Chase & Co."},
+            {"symbol": "JNJ", "name": "Johnson & Johnson"},
+            {"symbol": "WMT", "name": "Walmart Inc."},
+            {"symbol": "MA", "name": "Mastercard Incorporated"},
+            {"symbol": "PG", "name": "Procter & Gamble Co."},
+            {"symbol": "NVDA", "name": "NVIDIA Corporation"},
+            {"symbol": "HD", "name": "The Home Depot Inc."},
+            {"symbol": "PYPL", "name": "PayPal Holdings Inc."},
+            {"symbol": "BAC", "name": "Bank of America Corp."},
+            {"symbol": "ADBE", "name": "Adobe Inc."},
+            {"symbol": "CMCSA", "name": "Comcast Corporation"},
+            {"symbol": "PFE", "name": "Pfizer Inc."},
+            {"symbol": "CSCO", "name": "Cisco Systems Inc."},
+            {"symbol": "PEP", "name": "PepsiCo Inc."},
+            {"symbol": "INTC", "name": "Intel Corporation"},
+            {"symbol": "NFLX", "name": "Netflix Inc."},
+            {"symbol": "KO", "name": "The Coca-Cola Co."},
+            {"symbol": "T", "name": "AT&T Inc."},
+            {"symbol": "MRK", "name": "Merck & Co., Inc."},
+            {"symbol": "XOM", "name": "Exxon Mobil Corporation"},
+            {"symbol": "VZ", "name": "Verizon Communications Inc."},
+            {"symbol": "ABBV", "name": "AbbVie Inc."},
+            {"symbol": "ORCL", "name": "Oracle Corporation"},
+            {"symbol": "CRM", "name": "salesforce.com, inc."},
+            {"symbol": "TMO", "name": "Thermo Fisher Scientific Inc."},
+            {"symbol": "UNH", "name": "UnitedHealth Group Incorporated"},
+            {"symbol": "ABT", "name": "Abbott Laboratories"},
+            {"symbol": "MDT", "name": "Medtronic plc"},
+            {"symbol": "LLY", "name": "Eli Lilly and Company"},
+            {"symbol": "PM", "name": "Philip Morris International Inc."},
+            {"symbol": "ACN", "name": "Accenture plc"},
+            {"symbol": "LIN", "name": "Linde plc"},
+            {"symbol": "DIS", "name": "The Walt Disney Company"},
+            {"symbol": "MMM", "name": "3M Company"},
+            {"symbol": "NKE", "name": "NIKE, Inc."},
+            {"symbol": "TXN", "name": "Texas Instruments Incorporated"},
+            {"symbol": "HON", "name": "Honeywell International Inc."},
+            {"symbol": "AMGN", "name": "Amgen Inc."},
+            {"symbol": "IBM", "name": "International Business Machines Corporation"},
+            {"symbol": "GILD", "name": "Gilead Sciences, Inc."},
+            {"symbol": "AVGO", "name": "Broadcom Inc."},
+            {"symbol": "BA", "name": "The Boeing Company"},
+            {"symbol": "CAT", "name": "Caterpillar Inc."},
+            {"symbol": "AXP", "name": "American Express Company"},
+            {"symbol": "CVX", "name": "Chevron Corporation"},
+            {"symbol": "DHR", "name": "Danaher Corporation"},
+            {"symbol": "UTX", "name": "United Technologies Corporation"},
+            {"symbol": "GS", "name": "TheGoldman Sachs Group, Inc."},
+            {"symbol": "MMM", "name": "3M Company"},
+            {"symbol": "NKE", "name": "NIKE, Inc."},
+            {"symbol": "TXN", "name": "Texas Instruments Incorporated"},
+            {"symbol": "HON", "name": "Honeywell International Inc."},
+            {"symbol": "AMGN", "name": "Amgen Inc."},
+            {"symbol": "IBM", "name": "International Business Machines Corporation"},
+            {"symbol": "GILD", "name": "Gilead Sciences, Inc."},
+            {"symbol": "AVGO", "name": "Broadcom Inc."},
+            {"symbol": "BA", "name": "The Boeing Company"},
+            {"symbol": "CAT", "name": "Caterpillar Inc."},
+            {"symbol": "AXP", "name": "American Express Company"},
+            {"symbol": "CVX", "name": "Chevron Corporation"},
+            {"symbol": "DHR", "name": "Danaher Corporation"},
+            {"symbol": "UTX", "name": "United Technologies Corporation"},
+            {"symbol": "GS", "name": "The Goldman Sachs Group, Inc."},
+            {"symbol": "QCOM", "name": "QUALCOMM Incorporated"},
+            {"symbol": "MO", "name": "Altria Group, Inc."},
+            {"symbol": "C", "name": "Citigroup Inc."},
+            {"symbol": "COP", "name": "ConocoPhillips"},
+            {"symbol": "VRTX", "name": "Vertex Pharmaceuticals Incorporated"},
+            {"symbol": "NEE", "name": "NextEra Energy, Inc."},
+            {"symbol": "AMT", "name": "American Tower Corporation"},
+            {"symbol": "LMT", "name": "Lockheed Martin Corporation"}
+        ];
+        
+            const companyNamesAndSymbols = companies.map(company => {
+                return { label: `${company.name} (${company.symbol})`, value: company.symbol };
             });
-            return false;
-        }
-
-        function showLoadingBar() {
-            $('#loading-container').show();
-        }
-
-        function hideLoadingBar() {
-            $('#loading-container').hide();
-        }
-    </script>
-</body>
-</html>
+        
+            $("#company").autocomplete({
+                source: companyNamesAndSymbols,
+                minLength: 2
+            });
+        
+            function submitForm() {
+                showLoadingBar();
+                $.ajax({
+                    type: 'POST',
+                    url: '/predict',
+                    data: $('#prediction-form').serialize(),
+                    success: function(response) {
+                        $('#results').html(response);
+                        hideLoadingBar();
+                    },
+                    error: function() {
+                        alert('An error occurred. Please try again later.');
+                        hideLoadingBar();
+                    }
+                });
+                return false;
+            }
+        
+            function showLoadingBar() {
+                $('#loading-container').show();
+            }
+        
+            function hideLoadingBar() {
+                $('#loading-container').hide();
+            }
+        </script>

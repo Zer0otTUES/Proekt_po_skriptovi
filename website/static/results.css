@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-image: url(images/results.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Results and loading styles */
+h2 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+li {
+    padding: 5px 0;
+    text-align: center;
+}
+
+li:nth-child(odd) {
+    background-color: #f1f1f1;
+}
