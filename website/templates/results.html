@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Price Prediction Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='results.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css')}}">
 </head>
 <body>
+    <div class="header">
+        <h1>Stock Price Prediction Results</h1>
+        <a href="/" class="home-button">Return to Homepage</a>
+    </div>
     {% if show_results %}
+    <!-- ... rest of the file ... -->
     <h2>Stock Price Test Prediction Results</h2>
     <img src="data:image/png;base64,{{ plot_url }}" alt="Stock price prediction chart">
     <h2>Future Predicted Prices</h2>

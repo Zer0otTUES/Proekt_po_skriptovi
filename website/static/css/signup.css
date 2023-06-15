@@ -1,0 +1,76 @@
+*{
+    font-family: 'PT Sans', sans-serif;
+    margin: 0px;
+    padding: 0px;
+    text-decoration:none;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../images/signup.jpg);
+    background-position: center;
+    background-size: cover;
+}
+form{
+    background: rgba(247, 231, 161, 0);
+    width: 350px;
+    height: 580px;
+    padding-left: 50px;
+    padding-top: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%)
+
+}
+h1{
+    text-align: center;
+    margin-bottom: 45px;
+    color: whitesmoke;
+    font-size: 40px;
+    transform: translate(-9%,-0%)
+}
+div.textBox1{
+    border-bottom: 2px solid white;
+    position: relative;
+    margin: 35px 0px;
+    transform: translate(-9%,-0%)
+}
+div.textBox1 input{
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: white;
+    height: 30px;
+    font-size: 20px;
+}
+div.textBox2{
+    border-bottom: 2px solid white;
+    position: relative;
+    margin: 35px 0;
+    transform: translate(-9%,-0%)
+}
+div.textBox2 input{
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: white;
+    height: 30px;
+    font-size: 20px;
+}
+input.signupBtn{
+    height: 45px;
+    width: 100%;
+    transform: translate(-9%,-0%);
+    border: none;
+    outline: none;
+    background-color: aliceblue;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+}
+input.signupBtn:hover{
+    background-position: right;
+    font-size: 18px;
+}
